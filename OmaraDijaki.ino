@@ -33,7 +33,6 @@ long kartice[36] = {0}; // An array to store card IDs
 
 void loop() {
   long skeniranaKartica;
-  digitalWrite(relays[0], LOW); // Turn off the first relay
   sevseg.refreshDisplay();
 
   if (wg.available()) {
@@ -46,8 +45,6 @@ void loop() {
       if (kartice[x] == skeniranaKartica) {
         Serial.print("Našel kartico za omarico: ");
         Serial.println(x + 1);
-        sevseg.setNumber(x + 1);
-        sevseg.refreshDisplay();
         digitalWrite(relays[x], HIGH); // Turn on the corresponding relay
         relayActivationTime[x] = millis(); // Record the activation time
         relayActive[x] = true; // Mark the relay as active
@@ -64,8 +61,6 @@ void loop() {
           kartice[x] = skeniranaKartica;
           Serial.print("Dal kartico v omarico: ");
           Serial.println(x + 1);
-          sevseg.setNumber(x + 1);
-          sevseg.refreshDisplay();
           digitalWrite(relays[x], HIGH); // Turn on the corresponding relay
           relayActivationTime[x] = millis(); // Record the activation time
           relayActive[x] = true; // Mark the relay as active
@@ -80,6 +75,15 @@ void loop() {
       Serial.println("Uspešno skenirano.");
     } else if (jeSkenirana) {
       Serial.println("Kartica že obstaja v bazi. Brišem...");
+    }
+
+    // Update the display with the corresponding number
+    for (int x = 0; x < 36; x++) {
+      if (relayActive[x]) {
+        sevseg.setNumber(x + 1);
+        sevseg.refreshDisplay();
+        break;
+      }
     }
 
     Serial.println("Naslovi kartic: ");
@@ -102,3 +106,4 @@ void loop() {
     sevseg.blank();
   }
 }
+
