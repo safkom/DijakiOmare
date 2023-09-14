@@ -27,83 +27,100 @@ void setup() {
   bool resistorsOnSegments = 0;
   sevseg.begin(COMMON_ANODE, numDigits, digitPins, segmentPins, resistorsOnSegments);
   sevseg.setBrightness(90);
+  sevseg.refreshDisplay(); // Initialize the display with a blank value
 }
 
-long kartice[36] = {0}; // An array to store card IDs
+bool Skenirana = false;
+long kartice[3] = {0}; // An array to store card IDs
+int cardCount = 0; // Variable to track the number of stored card IDs
 
 void loop() {
   long skeniranaKartica;
-  sevseg.refreshDisplay();
-
   if (wg.available()) {
-    bool jeSkenirana = false;
+    Skenirana = false;
     Serial.print("ID kartice = ");
     skeniranaKartica = wg.getCode();
     Serial.println(skeniranaKartica);
 
-    for (int x = 0; x < 36; x++) { // Iterate through all relays
-      if (kartice[x] == skeniranaKartica) {
-        Serial.print("Našel kartico za omarico: ");
-        Serial.println(x + 1);
-        digitalWrite(relays[x], HIGH); // Turn on the corresponding relay
-        relayActivationTime[x] = millis(); // Record the activation time
-        relayActive[x] = true; // Mark the relay as active
-        kartice[x] = 0;
-        jeSkenirana = true;
-        displayTurnOffTime = millis() + displayTurnOffDelay;
-        break;
-      }
+    OdstraniOmarico(skeniranaKartica);
+    
+    if (cardCount >= 3) {
+      DisplayFull();
     }
 
-    if (!jeSkenirana) {
-      for (int x = 0; x < 36; x++) {
-        if (kartice[x] == 0) {
-          kartice[x] = skeniranaKartica;
-          Serial.print("Dal kartico v omarico: ");
-          Serial.println(x + 1);
-          digitalWrite(relays[x], HIGH); // Turn on the corresponding relay
-          relayActivationTime[x] = millis(); // Record the activation time
-          relayActive[x] = true; // Mark the relay as active
-          jeSkenirana = false;
-          displayTurnOffTime = millis() + displayTurnOffDelay;
-          break;
-        }
-      }
+    if(!Skenirana){
+      DodajOmarico(skeniranaKartica);
     }
 
-    if (!jeSkenirana) {
-      Serial.println("Uspešno skenirano.");
-    } else if (jeSkenirana) {
-      Serial.println("Kartica že obstaja v bazi. Brišem...");
-    }
+    PrintArray();
+  }
 
-    // Update the display with the corresponding number
-    for (int x = 0; x < 36; x++) {
-      if (relayActive[x]) {
-        sevseg.setNumber(x + 1);
-        sevseg.refreshDisplay();
-        break;
-      }
-    }
-
-    Serial.println("Naslovi kartic: ");
-    for (int x = 0; x < 36; x++) {
-      Serial.print(kartice[x]);
-      Serial.print(", ");
-    }
-    Serial.println();
+  // Check if the array is full after the current scan
+  if (millis() >= displayTurnOffTime) {
+    sevseg.blank(); // Clear the display if not FULL and timeout
   }
 
   // Check and turn off relays based on the 5-second timer
-  for (int x = 0; x < 36; x++) {
+  for (int x = 0; x < 3; x++) {
     if (relayActive[x] && millis() - relayActivationTime[x] >= 5000) {
-      digitalWrite(relays[x], LOW); // Turn off the relay when the 5-second interval has passed
-      relayActive[x] = false; // Mark the relay as inactive
+      digitalWrite(relays[x], LOW);
+      relayActive[x] = false;
     }
   }
 
-  if (millis() >= displayTurnOffTime) {
-    sevseg.blank();
-  }
+  sevseg.refreshDisplay();
 }
 
+
+void DodajOmarico(long skeniranaKartica){
+    for (int x = 0; x < 3; x++) {
+        if (kartice[x] == 0) {
+          kartice[x] = skeniranaKartica;
+          cardCount++;
+          Serial.print("Dal kartico v omarico: ");
+          Serial.println(x + 1);
+          digitalWrite(relays[x], HIGH);
+          relayActivationTime[x] = millis();
+          relayActive[x] = true;
+          Skenirana = true;
+          displayTurnOffTime = millis() + displayTurnOffDelay;
+          sevseg.setNumber(x + 1);
+          Serial.println("Uspešno skenirano. Vpisal v array.");
+          break;
+        }
+      }
+}
+
+void OdstraniOmarico(long skeniranaKartica){
+  for (int x = 0; x < 3; x++) {
+      if (kartice[x] == skeniranaKartica) {
+        Serial.print("Našel kartico za omarico: ");
+        Serial.println(x + 1);
+        digitalWrite(relays[x], HIGH);
+        relayActivationTime[x] = millis();
+        relayActive[x] = true;
+        Skenirana = true;
+        displayTurnOffTime = millis() + displayTurnOffDelay;
+        sevseg.setNumber(x + 1); // Update the display with the corresponding number
+        kartice[x] = 0; // Reset the card in the array
+        cardCount--; // Decrement the card count
+        break;
+      }
+    }
+}
+
+void PrintArray(){
+  Serial.print("Array vsebine: ");
+    for (int x = 0; x < 3; x++) {
+      Serial.print(kartice[x]);
+      Serial.print(" ");
+    }
+    Serial.println();
+    Serial.println(cardCount);
+    Serial.println();
+}
+
+void DisplayFull(){
+  sevseg.setChars("FULL");
+  displayTurnOffTime = millis() + displayTurnOffDelay;
+}
