@@ -4,17 +4,18 @@
 WIEGAND wg;
 SevSeg sevseg;
 
-int relays[36]; // An array to store relay pins
-bool relayActive[36]; // An array to track active relays
-unsigned long relayActivationTime[36]; // An array to store activation time
+int relays[16]; // An array to store relay pins
+bool relayActive[16]; // An array to track active relays
+unsigned long relayActivationTime[16]; // An array to store activation time
 unsigned long displayTurnOffTime = 0;
 const unsigned long displayTurnOffDelay = 5000; // 5 seconds
 
 void setup() {
   // Initialize relay pins
-  for (int i = 0; i < 36; i++) {
-    relays[i] = i + 6; // Set relay pins (assuming consecutive pins)
+  for (int i = 0; i < 16; i++) {
+    relays[i] = i + 34; // Set relay pins (assuming consecutive pins)
     pinMode(relays[i], OUTPUT);
+    digitalWrite(relays[i], HIGH);
     relayActive[i] = false; // Initialize relay states to off
   }
 
@@ -31,7 +32,8 @@ void setup() {
 }
 
 bool Skenirana = false;
-long kartice[3] = {0}; // An array to store card IDs
+long kartice[16] = {0}; // An array to store card IDs
+int stKartic = 16;
 int cardCount = 0; // Variable to track the number of stored card IDs
 
 void loop() {
@@ -44,7 +46,7 @@ void loop() {
 
     OdstraniOmarico(skeniranaKartica);
     
-    if (cardCount >= 3) {
+    if (cardCount >= stKartic) {
       DisplayFull();
     }
 
@@ -61,9 +63,9 @@ void loop() {
   }
 
   // Check and turn off relays based on the 5-second timer
-  for (int x = 0; x < 3; x++) {
+  for (int x = 0; x < stKartic; x++) {
     if (relayActive[x] && millis() - relayActivationTime[x] >= 5000) {
-      digitalWrite(relays[x], LOW);
+      digitalWrite(relays[x], HIGH);
       relayActive[x] = false;
     }
   }
@@ -73,13 +75,13 @@ void loop() {
 
 
 void DodajOmarico(long skeniranaKartica){
-    for (int x = 0; x < 3; x++) {
+    for (int x = 0; x < stKartic; x++) {
         if (kartice[x] == 0) {
           kartice[x] = skeniranaKartica;
           cardCount++;
           Serial.print("Dal kartico v omarico: ");
           Serial.println(x + 1);
-          digitalWrite(relays[x], HIGH);
+          digitalWrite(relays[x], LOW);
           relayActivationTime[x] = millis();
           relayActive[x] = true;
           Skenirana = true;
@@ -92,11 +94,11 @@ void DodajOmarico(long skeniranaKartica){
 }
 
 void OdstraniOmarico(long skeniranaKartica){
-  for (int x = 0; x < 3; x++) {
+  for (int x = 0; x < stKartic; x++) {
       if (kartice[x] == skeniranaKartica) {
         Serial.print("Našel kartico za omarico: ");
         Serial.println(x + 1);
-        digitalWrite(relays[x], HIGH);
+        digitalWrite(relays[x], LOW);
         relayActivationTime[x] = millis();
         relayActive[x] = true;
         Skenirana = true;
@@ -111,7 +113,7 @@ void OdstraniOmarico(long skeniranaKartica){
 
 void PrintArray(){
   Serial.print("Array vsebine: ");
-    for (int x = 0; x < 3; x++) {
+    for (int x = 0; x < stKartic; x++) {
       Serial.print(kartice[x]);
       Serial.print(" ");
     }
