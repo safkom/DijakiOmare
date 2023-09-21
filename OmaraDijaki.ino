@@ -4,16 +4,16 @@
 WIEGAND wg;
 SevSeg sevseg;
 
-int relays[16]; // An array to store relay pins
-bool relayActive[16]; // An array to track active relays
+int relays[32]; // An array to store relay pins
+bool relayActive[32]; // An array to track active relays
 unsigned long relayActivationTime[16]; // An array to store activation time
 unsigned long displayTurnOffTime = 0;
 const unsigned long displayTurnOffDelay = 5000; // 5 seconds
 
 void setup() {
   // Initialize relay pins
-  for (int i = 0; i < 16; i++) {
-    relays[i] = i + 34; // Set relay pins (assuming consecutive pins)
+  for (int i = 0; i < 32; i++) {
+    relays[i] = i + 22; // Set relay pins (assuming consecutive pins)
     pinMode(relays[i], OUTPUT);
     digitalWrite(relays[i], HIGH);
     relayActive[i] = false; // Initialize relay states to off
@@ -23,8 +23,8 @@ void setup() {
   wg.begin();
 
   byte numDigits = 4;
-  byte digitPins[] = {22, 23, 24, 25};
-  byte segmentPins[] = {26, 27, 28, 29, 30, 31, 32, 33};
+  byte digitPins[] = {4, 5, 6, 7};
+  byte segmentPins[] = {8, 9, 10, 11, 12, 13, 14};
   bool resistorsOnSegments = 0;
   sevseg.begin(COMMON_ANODE, numDigits, digitPins, segmentPins, resistorsOnSegments);
   sevseg.setBrightness(90);
