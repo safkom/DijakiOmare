@@ -5,36 +5,41 @@
 #include <Adafruit_SSD1306.h>
 WIEGAND wg;
 
+// Velikost zaslona
 #define SCREEN_WIDTH 128 // OLED display width, in pixels
 #define SCREEN_HEIGHT 64 // OLED display height, in pixels
 
-// Declaration for SSD1306 display connected using software SPI (default case):
-#define OLED_MOSI   5
-#define OLED_CLK   4
-#define OLED_DC    7
-#define OLED_CS    12
-#define OLED_RESET 6
+// Določitev pin-ov za zaslon:
+#define OLED_CLK   4 // SCL
+#define OLED_RESET 5 // RES
+#define OLED_MOSI   6 // SDA
+#define OLED_DC    7 // DC
+#define OLED_CS    0 // ni važno, sam more bit
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT,
 OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 
-int relays[36]; // An array to store relay pins
-bool relayActive[36]; // An array to track active relays
-unsigned long relayActivationTime[36]; // An array to store activation time
+//Določitev relayov in čas sprostitve
+int relays[36]; // 
+bool relayActive[36];
+unsigned long relayActivationTime[36];
 unsigned long displayTurnOffTime = 0;
-const unsigned long displayTurnOffDelay = 5000; // 5 seconds
+const unsigned long displayTurnOffDelay = 5000;
 
 void setup() {
   
-  // Initialize relay pins
+  // Določanje relayov digitalnim pinom
   for (int i = 0; i < 32; i++) {
-    relays[i] = i + 22; // Set relay pins (assuming consecutive pins)
+    relays[i] = i + 22;
     pinMode(relays[i], OUTPUT);
     digitalWrite(relays[i], HIGH);
-    relayActive[i] = false; // Initialize relay states to off
+    relayActive[i] = false;
   }
 
   Serial.begin(9600);
+  // Prižgemo čitalec za kartice
   wg.begin();
+
+  //Pregledam če je display OK, in ga nastavim
   if(!display.begin(SSD1306_SWITCHCAPVCC)) {
     Serial.println(F("SSD1306 allocation failed"));
     for(;;); // Don't proceed, loop forever
@@ -43,39 +48,40 @@ void setup() {
   display.display();
   display.clearDisplay();
 }
-
+//Dekleracije za kartice
 bool Skenirana = false;
-long kartice[16] = {0}; // An array to store card IDs
-int stKartic = 16;
+long kartice[36] = {0}; // An array to store card IDs
+int stKartic = 36;
 int cardCount = 0; // Variable to track the number of stored card IDs
 
 void loop() {
   long skeniranaKartica;
+  //Preverim, če je bila kartica skenirana
   if (wg.available()) {
     Skenirana = false;
-    Serial.print("ID kartice = ");
+    Serial.print("ID kartice = "); // Izpišem ID kartice
     skeniranaKartica = wg.getCode();
     Serial.println(skeniranaKartica);
 
-    OdstraniOmarico(skeniranaKartica);
+    OdstraniOmarico(skeniranaKartica); //Najprej oddstranim kartico, če je že v arrayu
     
-    if (cardCount >= stKartic) {
+    if (cardCount >= stKartic) { // Če ni bila kartica v arrayu, in je array poln, to izpišem
       DisplayFull();
     }
 
-    if(!Skenirana){
+    if(!Skenirana){ // Če array ni poln in kartica ni v arrayu, jo dodam
       DodajOmarico(skeniranaKartica);
     }
 
-    PrintArray();
+    PrintArray(); // Izpišem cel array
   }
 
-  // Check if the array is full after the current scan
+  // Preverim če je že minilo 5 sec, da ugasnem zaslon
   if (millis() >= displayTurnOffTime) {
     display.clearDisplay(); // Clear the display if not FULL and timeout
   }
 
-  // Check and turn off relays based on the 5-second timer
+  // Preverim če je že minilo 5 sec, da ugasnem relay
   for (int x = 0; x < stKartic; x++) {
     if (relayActive[x] && millis() - relayActivationTime[x] >= 5000) {
       digitalWrite(relays[x], HIGH);
@@ -83,10 +89,10 @@ void loop() {
     }
   }
 
-  display.display();
+  display.display(); //Osvežim zaslon
 }
 
-
+// Funkcija za dodajanje kartice v array, in odklepanje omarice
 void DodajOmarico(long skeniranaKartica){
     for (int x = 0; x < stKartic; x++) {
         if (kartice[x] == 0) {
@@ -120,7 +126,7 @@ void DodajOmarico(long skeniranaKartica){
         }
       }
 }
-
+// Funkcija za odstranitev kartice iz array-a, in odklepanje omarice
 void OdstraniOmarico(long skeniranaKartica){
   for (int x = 0; x < stKartic; x++) {
     if (kartice[x] == skeniranaKartica) {
@@ -153,7 +159,7 @@ void OdstraniOmarico(long skeniranaKartica){
 
   }
 }
-
+// Funckija za izpis array-a
 void PrintArray(){
   Serial.print("Array vsebine: ");
     for (int x = 0; x < stKartic; x++) {
@@ -164,7 +170,7 @@ void PrintArray(){
     Serial.println(cardCount);
     Serial.println();
 }
-
+// Funckija za izpis na zaslonu, če je array poln.
 void DisplayFull(){
   display.clearDisplay();
   display.setTextSize(5);
