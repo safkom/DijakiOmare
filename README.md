@@ -1,10 +1,12 @@
 # DijakiOmare
 
 Projekt za omarice v 5. nadstropju ERŠ-a. 
-Za compiling kode, je potrebno importati priložen .zip v Arduino in dodati library SevSeg.
-Potrebno je še dodati library Adafruit SSD1306.
 
-## Postavitev:
+## Inštalacija
+Za compiling kode, je potrebno importati priložen .zip v Arduino in dodati library SevSeg.
+Potrebno je še dodati library Adafruit SSD1306. Ta doda tudi Wire in Adafruit GFX.
+
+### Postavitev:
 Skener kartic:\
 Rdeča: 5V\
 Črna: GND\
