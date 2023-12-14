@@ -3,7 +3,7 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include <EEPROM.h> // Dodajanje knjižnice za uporabo EEPROM
+#include <EEPROM.h>
 
 WIEGAND wg;
 
@@ -28,23 +28,10 @@ unsigned long relayActivationTime[36];
 unsigned long displayTurnOffTime = 0;
 const unsigned long displayTurnOffDelay = 5000;
 
-// Funkcija za branje stanja omaric iz EEPROM-a
-void preberiStanjeOmaric() {
-  for (int i = 0; i < 36; i++) {
-    relayActive[i] = EEPROM.read(i) == 1;
-    if (relayActive[i]) {
-      digitalWrite(relays[i], LOW);
-      relayActivationTime[i] = millis();
-    }
-  }
-}
-
-// Funkcija za pisanje stanja omaric v EEPROM
-void zapisStanjaOmaric() {
-  for (int i = 0; i < 36; i++) {
-    EEPROM.write(i, relayActive[i] ? 1 : 0);
-  }
-}
+bool Skenirana = false;
+long kartice[36] = {0};
+int stKartic = 36;
+int cardCount = 0;
 
 void setup() {
   // Določitev pin-ov za releje
@@ -244,15 +231,11 @@ relayActive[36] = false;
   display.drawPixel(10, 10, SSD1306_WHITE);
   display.display();
   display.clearDisplay();
-
   // Branje stanja omaric iz EEPROM-a ob zagonu
   preberiStanjeOmaric();
 }
 
-bool Skenirana = false;
-long kartice[36] = {0};
-int stKartic = 36;
-int cardCount = 0;
+
 
 // Glavna zanka programa
 void loop() {
@@ -272,6 +255,7 @@ void loop() {
     }
 
     PrintArray();
+    zapisStanjaOmaric();  // Posodobitev stanja omaric v EEPROM-u
   }
 
   if (millis() >= displayTurnOffTime) {
@@ -286,7 +270,7 @@ void loop() {
   }
 
   display.display();
-  zapisStanjaOmaric();  // Posodobitev stanja omaric v EEPROM-u
+
 }
 
 // Dodajanje kartice v omarico
@@ -375,4 +359,18 @@ void DisplayFull() {
   display.println(F("Vse omarice so zasedene!"));
   display.display();
   displayTurnOffTime = millis() + displayTurnOffDelay;
+}
+
+// Funkcija za branje stanja omaric iz EEPROM-a
+void preberiStanjeOmaric() {
+  for (int i = 0; i < 36; i++) {
+    kartice[i] = EEPROM.read(i);
+  }
+}
+
+// Funkcija za pisanje stanja omaric v EEPROM
+void zapisStanjaOmaric() {
+  for (int i = 0; i < 36; i++) {
+    EEPROM.write(i, kartice[i]);
+  }
 }
