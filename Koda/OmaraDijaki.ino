@@ -44,7 +44,6 @@ void zapisStanjaOmaric() {
   for (int i = 0; i < 36; i++) {
     EEPROM.write(i, relayActive[i] ? 1 : 0);
   }
-  EEPROM.commit();
 }
 
 void setup() {
