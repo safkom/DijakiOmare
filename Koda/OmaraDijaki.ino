@@ -3,39 +3,33 @@
 #include <Wire.h>
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
-#include <EEPROM.h>
-
 WIEGAND wg;
 
 // Velikost zaslona
-#define SCREEN_WIDTH 128
-#define SCREEN_HEIGHT 64
+#define SCREEN_WIDTH 128 // OLED display width, in pixels
+#define SCREEN_HEIGHT 64 // OLED display height, in pixels
 
-// Definicije pin-ov za OLED zaslon
+// Določitev pin-ov za zaslon:
 #define OLED_CLK   4 // SCL
 #define OLED_RESET 5 // RES
 #define OLED_MOSI   6 // SDA
 #define OLED_DC    7 // DC
-#define OLED_CS    0 // Ni pomembno, samo mora biti določeno
-
+#define OLED_CS    0 // ni važno, sam more bit
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT,
-                         OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
+OLED_MOSI, OLED_CLK, OLED_DC, OLED_RESET, OLED_CS);
 
-// Definicije za releje in čas sprostitve
-int relays[36];
+//Določitev relayov in čas sprostitve
+int relays[36]; // 
 bool relayActive[36];
 unsigned long relayActivationTime[36];
 unsigned long displayTurnOffTime = 0;
 const unsigned long displayTurnOffDelay = 5000;
 
-bool Skenirana = false;
-long kartice[36] = {0};
-int stKartic = 36;
-int cardCount = 0;
-
 void setup() {
-  // Določitev pin-ov za releje
-  relays[1] = 53;
+  
+  // Določanje relayov digitalnim pinom
+ 
+relays[1] = 53;
 pinMode(relays[1], OUTPUT);
 digitalWrite(relays[1], HIGH);
 relayActive[1] = false;
@@ -215,53 +209,54 @@ pinMode(relays[36], OUTPUT);
 digitalWrite(relays[36], HIGH);
 relayActive[36] = false;
 
-  relays[36] = 18;
-  pinMode(relays[36], OUTPUT);
-  digitalWrite(relays[36], HIGH);
-  relayActive[36] = false;
 
   Serial.begin(9600);
+  // Prižgemo čitalec za kartice
   wg.begin();
 
-  if (!display.begin(SSD1306_SWITCHCAPVCC)) {
-    Serial.println(F("SSD1306: Napaka pri inicializaciji"));
-    for (;;) {}
+  //Pregledam če je display OK, in ga nastavim
+  if(!display.begin(SSD1306_SWITCHCAPVCC)) {
+    Serial.println(F("SSD1306 allocation failed"));
+    for(;;); // Don't proceed, loop forever
   }
-
   display.drawPixel(10, 10, SSD1306_WHITE);
   display.display();
   display.clearDisplay();
-  // Branje stanja omaric iz EEPROM-a ob zagonu
-  preberiStanjeOmaric();
 }
+//Dekleracije za kartice
+bool Skenirana = false;
+long kartice[36] = {0}; // An array to store card IDs
+int stKartic = 36;
+int cardCount = 0; // Variable to track the number of stored card IDs
 
-
-
-// Glavna zanka programa
 void loop() {
   long skeniranaKartica;
+  //Preverim, če je bila kartica skenirana
   if (wg.available()) {
     Skenirana = false;
+    Serial.print("ID kartice = "); // Izpišem ID kartice
     skeniranaKartica = wg.getCode();
+    Serial.println(skeniranaKartica);
 
-    OdstraniOmarico(skeniranaKartica);
-
-    if (cardCount >= stKartic) {
+    OdstraniOmarico(skeniranaKartica); //Najprej oddstranim kartico, če je že v arrayu
+    
+    if (cardCount >= stKartic) { // Če ni bila kartica v arrayu, in je array poln, to izpišem
       DisplayFull();
     }
 
-    if (!Skenirana) {
+    if(!Skenirana){ // Če array ni poln in kartica ni v arrayu, jo dodam
       DodajOmarico(skeniranaKartica);
     }
 
-    PrintArray();
-    zapisStanjaOmaric();  // Posodobitev stanja omaric v EEPROM-u
+    PrintArray(); // Izpišem cel array
   }
 
+  // Preverim če je že minilo 5 sec, da ugasnem zaslon
   if (millis() >= displayTurnOffTime) {
-    display.clearDisplay();
+    display.clearDisplay(); // Clear the display if not FULL and timeout
   }
 
+  // Preverim če je že minilo 5 sec, da ugasnem relay
   for (int x = 0; x < stKartic; x++) {
     if (relayActive[x] && millis() - relayActivationTime[x] >= 5000) {
       digitalWrite(relays[x], HIGH);
@@ -269,45 +264,45 @@ void loop() {
     }
   }
 
-  display.display();
-
+  display.display(); //Osvežim zaslon
 }
 
-// Dodajanje kartice v omarico
-void DodajOmarico(long skeniranaKartica) {
-  for (int x = 0; x < stKartic; x++) {
-    if (kartice[x] == 0) {
-      kartice[x] = skeniranaKartica;
-      cardCount++;
-      Serial.print("Dal kartico v omarico: ");
-      Serial.println(x + 1);
-      digitalWrite(relays[x], LOW);
-      relayActivationTime[x] = millis();
-      relayActive[x] = true;
-      Skenirana = true;
-      displayTurnOffTime = millis() + displayTurnOffDelay;
-      display.clearDisplay();
-      if ((x + 1) >= 10) {
-        display.setTextSize(9);
-        display.setTextColor(SSD1306_WHITE);
-        display.setCursor(15, 0);
-        display.println(x + 1);
-        display.display();
-      } else {
-        display.setTextSize(8);
-        display.setTextColor(SSD1306_WHITE);
-        display.setCursor(40, 0);
-        display.println(x + 1);
-        display.display();
+// Funkcija za dodajanje kartice v array, in odklepanje omarice
+void DodajOmarico(long skeniranaKartica){
+    for (int x = 0; x < stKartic; x++) {
+        if (kartice[x] == 0) {
+          kartice[x] = skeniranaKartica;
+          cardCount++;
+          Serial.print("Dal kartico v omarico: ");
+          Serial.println(x + 1);
+          digitalWrite(relays[x], LOW);
+          relayActivationTime[x] = millis();
+          relayActive[x] = true;
+          Skenirana = true;
+          displayTurnOffTime = millis() + displayTurnOffDelay;
+          display.clearDisplay();
+          if((x + 1)  >= 10){
+          display.setTextSize(9); // Prilagodite velikost besedila po potrebi
+          display.setTextColor(SSD1306_WHITE);
+          display.setCursor(15,0);
+          display.println(x + 1);
+          display.display();
+          }
+          else{
+          display.setTextSize(8); // Prilagodite velikost besedila po potrebi
+          display.setTextColor(SSD1306_WHITE);
+          display.setCursor(40,0);
+          display.println(x + 1);
+          display.display();
+          }
+          
+          Serial.println("Uspešno skenirano. Vpisal v array.");
+          break;
+        }
       }
-      Serial.println("Uspešno skenirano. Vpisal v array.");
-      break;
-    }
-  }
 }
-
-// Odstranjevanje kartice iz omarice
-void OdstraniOmarico(long skeniranaKartica) {
+// Funkcija za odstranitev kartice iz array-a, in odklepanje omarice
+void OdstraniOmarico(long skeniranaKartica){
   for (int x = 0; x < stKartic; x++) {
     if (kartice[x] == skeniranaKartica) {
       Serial.print("Našel kartico za omarico: ");
@@ -318,40 +313,40 @@ void OdstraniOmarico(long skeniranaKartica) {
       Skenirana = true;
       displayTurnOffTime = millis() + displayTurnOffDelay;
       display.clearDisplay();
-      if ((x + 1) >= 10) {
-        display.setTextSize(9);
-        display.setTextColor(SSD1306_WHITE);
-        display.setCursor(15, 0);
-        display.println(x + 1);
-        display.display();
-      } else {
-        display.setTextSize(8);
-        display.setTextColor(SSD1306_WHITE);
-        display.setCursor(40, 0);
-        display.println(x + 1);
-        display.display();
-      }
-      kartice[x] = 0;
-      cardCount--;
+      if((x + 1)  >= 10){
+          display.setTextSize(9); // Prilagodite velikost besedila po potrebi
+          display.setTextColor(SSD1306_WHITE);
+          display.setCursor(15,0);
+          display.println(x + 1);
+          display.display();
+          }
+          else{
+          display.setTextSize(8); // Prilagodite velikost besedila po potrebi
+          display.setTextColor(SSD1306_WHITE);
+          display.setCursor(40,0);
+          display.println(x + 1);
+          display.display();
+          }
+      kartice[x] = 0; // Reset the card in the array
+      cardCount--; // Decrement the card count
       break;
-    }
-  }
 }
 
-// Izpis vsebine array-a
-void PrintArray() {
+  }
+}
+// Funckija za izpis array-a
+void PrintArray(){
   Serial.print("Array vsebine: ");
-  for (int x = 0; x < stKartic; x++) {
-    Serial.print(kartice[x]);
-    Serial.print(" ");
-  }
-  Serial.println();
-  Serial.println(cardCount);
-  Serial.println();
+    for (int x = 0; x < stKartic; x++) {
+      Serial.print(kartice[x]);
+      Serial.print(" ");
+    }
+    Serial.println();
+    Serial.println(cardCount);
+    Serial.println();
 }
-
-// Izpis na zaslonu, če je array poln
-void DisplayFull() {
+// Funckija za izpis na zaslonu, če je array poln.
+void DisplayFull(){
   display.clearDisplay();
   display.setTextSize(5);
   display.setTextColor(SSD1306_WHITE);
@@ -359,18 +354,4 @@ void DisplayFull() {
   display.println(F("Vse omarice so zasedene!"));
   display.display();
   displayTurnOffTime = millis() + displayTurnOffDelay;
-}
-
-// Funkcija za branje stanja omaric iz EEPROM-a
-void preberiStanjeOmaric() {
-  for (int i = 0; i < 36; i++) {
-    kartice[i] = EEPROM.read(i);
-  }
-}
-
-// Funkcija za pisanje stanja omaric v EEPROM
-void zapisStanjaOmaric() {
-  for (int i = 0; i < 36; i++) {
-    EEPROM.write(i, kartice[i]);
-  }
 }
