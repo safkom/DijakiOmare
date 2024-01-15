@@ -269,7 +269,7 @@ void loop() {
   }
 
   // Preverim če je že minilo 5 sec, da ugasnem relay
-  for (int x = 0; x < stKartic; x++) {
+  for (int x = 1; x < stKartic; x++) {
     if (relayActive[x] && millis() - relayActivationTime[x] >= 5000) {
       digitalWrite(relays[x], HIGH);
       relayActive[x] = false;
@@ -281,12 +281,12 @@ void loop() {
 
 // Funkcija za dodajanje kartice v array, in odklepanje omarice
 void DodajOmarico(long skeniranaKartica){
-    for (int x = 0; x < stKartic; x++) {
+    for (int x = 1; x < stKartic; x++) {
         if (kartice[x] == 0) {
           kartice[x] = skeniranaKartica;
           cardCount++;
           Serial.print("Dal kartico v omarico: ");
-          Serial.println(x + 1);
+          Serial.println(x);
           digitalWrite(relays[x], LOW);
           relayActivationTime[x] = millis();
           relayActive[x] = true;
@@ -297,14 +297,14 @@ void DodajOmarico(long skeniranaKartica){
           display.setTextSize(9); // Prilagodite velikost besedila po potrebi
           display.setTextColor(SSD1306_WHITE);
           display.setCursor(15,0);
-          display.println(x + 1);
+          display.println(x);
           display.display();
           }
           else{
           display.setTextSize(8); // Prilagodite velikost besedila po potrebi
           display.setTextColor(SSD1306_WHITE);
           display.setCursor(40,0);
-          display.println(x + 1);
+          display.println(x);
           display.display();
           }
           
@@ -315,13 +315,14 @@ void DodajOmarico(long skeniranaKartica){
 }
 // Funkcija za odstranitev kartice iz array-a, in odklepanje omarice
 void OdstraniOmarico(long skeniranaKartica){
-  for (int x = 0; x < stKartic; x++) {
+  for (int x = 1; x < stKartic; x++) {
     if (kartice[x] == skeniranaKartica) {
       Serial.print("Našel kartico za omarico: ");
-      Serial.println(x + 1);
+      Serial.println(x);
       digitalWrite(relays[x], LOW);
       relayActivationTime[x] = millis();
       relayActive[x] = true;
+
       Skenirana = true;
       displayTurnOffTime = millis() + displayTurnOffDelay;
       display.clearDisplay();
@@ -329,14 +330,14 @@ void OdstraniOmarico(long skeniranaKartica){
           display.setTextSize(9); // Prilagodite velikost besedila po potrebi
           display.setTextColor(SSD1306_WHITE);
           display.setCursor(15,0);
-          display.println(x + 1);
+          display.println(x);
           display.display();
           }
           else{
           display.setTextSize(8); // Prilagodite velikost besedila po potrebi
           display.setTextColor(SSD1306_WHITE);
           display.setCursor(40,0);
-          display.println(x + 1);
+          display.println(x);
           display.display();
           }
       kartice[x] = 0; // Reset the card in the array
@@ -349,7 +350,7 @@ void OdstraniOmarico(long skeniranaKartica){
 // Funckija za izpis array-a
 void PrintArray(){
   Serial.print("Array vsebine: ");
-    for (int x = 0; x < stKartic; x++) {
+    for (int x = 1; x < stKartic; x++) {
       Serial.print(kartice[x]);
       Serial.print(" ");
     }
