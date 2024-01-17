@@ -237,8 +237,8 @@ void setup() {
 }
 //Dekleracije za kartice
 bool Skenirana = false;
-long kartice[36] = {0}; // An array to store card IDs
-int stKartic = 36;
+long kartice[37] = {0}; // An array to store card IDs
+int stKartic = 37;
 int cardCount = 0; // Variable to track the number of stored card IDs
 
 void loop() {
@@ -252,7 +252,7 @@ void loop() {
 
     OdstraniOmarico(skeniranaKartica); //Najprej oddstranim kartico, če je že v arrayu
     
-    if (cardCount >= stKartic) { // Če ni bila kartica v arrayu, in je array poln, to izpišem
+    if (cardCount == 36) { // Če ni bila kartica v arrayu, in je array poln, to izpišem
       DisplayFull();
     }
 
@@ -293,8 +293,8 @@ void DodajOmarico(long skeniranaKartica){
           Skenirana = true;
           displayTurnOffTime = millis() + displayTurnOffDelay;
           display.clearDisplay();
-          if((x + 1)  >= 10){
-          display.setTextSize(9); // Prilagodite velikost besedila po potrebi
+          if(x  >= 10){
+          display.setTextSize(6); // Prilagodite velikost besedila po potrebi
           display.setTextColor(SSD1306_WHITE);
           display.setCursor(15,0);
           display.println(x);
@@ -326,10 +326,10 @@ void OdstraniOmarico(long skeniranaKartica){
       Skenirana = true;
       displayTurnOffTime = millis() + displayTurnOffDelay;
       display.clearDisplay();
-      if((x + 1)  >= 10){
-          display.setTextSize(9); // Prilagodite velikost besedila po potrebi
+      if(x >= 10){
+          display.setTextSize(6); // Prilagodite velikost besedila po potrebi
           display.setTextColor(SSD1306_WHITE);
-          display.setCursor(15,0);
+          display.setCursor(18,2);
           display.println(x);
           display.display();
           }
@@ -361,10 +361,11 @@ void PrintArray(){
 // Funckija za izpis na zaslonu, če je array poln.
 void DisplayFull(){
   display.clearDisplay();
-  display.setTextSize(5);
+  display.setTextSize(3);
   display.setTextColor(SSD1306_WHITE);
   display.setCursor(0, 0);
   display.println(F("Vse omarice so zasedene!"));
   display.display();
+  Serial.println("Polno!");
   displayTurnOffTime = millis() + displayTurnOffDelay;
 }
