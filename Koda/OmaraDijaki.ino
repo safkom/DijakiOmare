@@ -34,75 +34,75 @@ void setup() {
   digitalWrite(relays[1], HIGH);
   relayActive[1] = false;
 
-  relays[2] = 25;
-  pinMode(relays[2], OUTPUT);
-  digitalWrite(relays[2], HIGH);
-  relayActive[2] = false;
-
-  relays[3] = 27;
+  relays[3] = 25;
   pinMode(relays[3], OUTPUT);
   digitalWrite(relays[3], HIGH);
   relayActive[3] = false;
 
-  relays[4] = 29;
-  pinMode(relays[4], OUTPUT);
-  digitalWrite(relays[4], HIGH);
-  relayActive[4] = false;
-
-  relays[5] = 31;
+  relays[5] = 27;
   pinMode(relays[5], OUTPUT);
   digitalWrite(relays[5], HIGH);
   relayActive[5] = false;
 
-  relays[6] = 33;
-  pinMode(relays[6], OUTPUT);
-  digitalWrite(relays[6], HIGH);
-  relayActive[6] = false;
-
-  relays[7] = 35;
+  relays[7] = 29;
   pinMode(relays[7], OUTPUT);
   digitalWrite(relays[7], HIGH);
   relayActive[7] = false;
 
-  relays[8] = 37;
-  pinMode(relays[8], OUTPUT);
-  digitalWrite(relays[8], HIGH);
-  relayActive[8] = false;
-
-  relays[9] = 39;
+  relays[9] = 31;
   pinMode(relays[9], OUTPUT);
   digitalWrite(relays[9], HIGH);
   relayActive[9] = false;
 
-  relays[10] = 41;
-  pinMode(relays[10], OUTPUT);
-  digitalWrite(relays[10], HIGH);
-  relayActive[10] = false;
-
-  relays[11] = 43;
+  relays[11] = 33;
   pinMode(relays[11], OUTPUT);
   digitalWrite(relays[11], HIGH);
   relayActive[11] = false;
 
-  relays[12] = 45;
-  pinMode(relays[12], OUTPUT);
-  digitalWrite(relays[12], HIGH);
-  relayActive[12] = false;
-
-  relays[13] = 47;
+  relays[13] = 35;
   pinMode(relays[13], OUTPUT);
   digitalWrite(relays[13], HIGH);
   relayActive[13] = false;
 
-  relays[14] = 49;
-  pinMode(relays[14], OUTPUT);
-  digitalWrite(relays[14], HIGH);
-  relayActive[14] = false;
-
-  relays[15] = 51;
+  relays[15] = 37;
   pinMode(relays[15], OUTPUT);
   digitalWrite(relays[15], HIGH);
   relayActive[15] = false;
+
+  relays[2] = 39;
+  pinMode(relays[2], OUTPUT);
+  digitalWrite(relays[2], HIGH);
+  relayActive[2] = false;
+
+  relays[4] = 41;
+  pinMode(relays[4], OUTPUT);
+  digitalWrite(relays[4], HIGH);
+  relayActive[4] = false;
+
+  relays[6] = 43;
+  pinMode(relays[6], OUTPUT);
+  digitalWrite(relays[6], HIGH);
+  relayActive[6] = false;
+
+  relays[8] = 45;
+  pinMode(relays[8], OUTPUT);
+  digitalWrite(relays[8], HIGH);
+  relayActive[8] = false;
+
+  relays[10] = 47;
+  pinMode(relays[10], OUTPUT);
+  digitalWrite(relays[10], HIGH);
+  relayActive[10] = false;
+
+  relays[12] = 49;
+  pinMode(relays[12], OUTPUT);
+  digitalWrite(relays[12], HIGH);
+  relayActive[12] = false;
+
+  relays[14] = 51;
+  pinMode(relays[14], OUTPUT);
+  digitalWrite(relays[14], HIGH);
+  relayActive[14] = false;
 
   relays[16] = 53;
   pinMode(relays[16], OUTPUT);
@@ -114,75 +114,75 @@ void setup() {
   digitalWrite(relays[17], HIGH);
   relayActive[17] = false;
 
-  relays[18] = 24;
-  pinMode(relays[18], OUTPUT);
-  digitalWrite(relays[18], HIGH);
-  relayActive[18] = false;
-
-  relays[19] = 26;
+  relays[19] = 24;
   pinMode(relays[19], OUTPUT);
   digitalWrite(relays[19], HIGH);
   relayActive[19] = false;
 
-  relays[20] = 28;
-  pinMode(relays[20], OUTPUT);
-  digitalWrite(relays[20], HIGH);
-  relayActive[20] = false;
-
-  relays[21] = 30;
+  relays[21] = 26;
   pinMode(relays[21], OUTPUT);
   digitalWrite(relays[21], HIGH);
   relayActive[21] = false;
 
-  relays[22] = 32;
-  pinMode(relays[22], OUTPUT);
-  digitalWrite(relays[22], HIGH);
-  relayActive[22] = false;
-
-  relays[23] = 34;
+  relays[23] = 28;
   pinMode(relays[23], OUTPUT);
   digitalWrite(relays[23], HIGH);
   relayActive[23] = false;
 
-  relays[24] = 36;
-  pinMode(relays[24], OUTPUT);
-  digitalWrite(relays[24], HIGH);
-  relayActive[24] = false;
-
-  relays[25] = 38;
+  relays[25] = 30;
   pinMode(relays[25], OUTPUT);
   digitalWrite(relays[25], HIGH);
   relayActive[25] = false;
 
-  relays[26] = 40;
-  pinMode(relays[26], OUTPUT);
-  digitalWrite(relays[26], HIGH);
-  relayActive[26] = false;
-
-  relays[27] = 42;
+  relays[27] = 32;
   pinMode(relays[27], OUTPUT);
   digitalWrite(relays[27], HIGH);
   relayActive[27] = false;
 
-  relays[28] = 44;
-  pinMode(relays[28], OUTPUT);
-  digitalWrite(relays[28], HIGH);
-  relayActive[28] = false;
-
-  relays[29] = 46;
+  relays[29] = 34;
   pinMode(relays[29], OUTPUT);
   digitalWrite(relays[29], HIGH);
   relayActive[29] = false;
 
-  relays[30] = 48;
-  pinMode(relays[30], OUTPUT);
-  digitalWrite(relays[30], HIGH);
-  relayActive[30] = false;
-
-  relays[31] = 50;
+  relays[31] = 36;
   pinMode(relays[31], OUTPUT);
   digitalWrite(relays[31], HIGH);
   relayActive[31] = false;
+
+  relays[18] = 38;
+  pinMode(relays[18], OUTPUT);
+  digitalWrite(relays[18], HIGH);
+  relayActive[18] = false;
+
+  relays[20] = 40;
+  pinMode(relays[20], OUTPUT);
+  digitalWrite(relays[20], HIGH);
+  relayActive[20] = false;
+
+  relays[22] = 42;
+  pinMode(relays[22], OUTPUT);
+  digitalWrite(relays[22], HIGH);
+  relayActive[22] = false;
+
+  relays[24] = 44;
+  pinMode(relays[24], OUTPUT);
+  digitalWrite(relays[24], HIGH);
+  relayActive[24] = false;
+
+  relays[26] = 46;
+  pinMode(relays[26], OUTPUT);
+  digitalWrite(relays[26], HIGH);
+  relayActive[26] = false;
+
+  relays[28] = 48;
+  pinMode(relays[28], OUTPUT);
+  digitalWrite(relays[28], HIGH);
+  relayActive[28] = false;
+
+  relays[30] = 50;
+  pinMode(relays[30], OUTPUT);
+  digitalWrite(relays[30], HIGH);
+  relayActive[30] = false;
 
   relays[32] = 52;
   pinMode(relays[32], OUTPUT);
@@ -270,7 +270,7 @@ void loop() {
 
   // Preverim če je že minilo 5 sec, da ugasnem relay
   for (int x = 1; x < stKartic; x++) {
-    if (relayActive[x] && millis() - relayActivationTime[x] >= 5000) {
+    if (relayActive[x] && millis() - relayActivationTime[x] >= 500) {
       digitalWrite(relays[x], HIGH);
       relayActive[x] = false;
     }
