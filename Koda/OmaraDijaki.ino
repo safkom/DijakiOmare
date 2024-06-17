@@ -31,182 +31,182 @@ void setup() {
  
   relays[1] = 23;
   pinMode(relays[1], OUTPUT);
-  digitalWrite(relays[1], HIGH);
+  digitalWrite(relays[1], LOW);
   relayActive[1] = false;
 
   relays[3] = 25;
   pinMode(relays[3], OUTPUT);
-  digitalWrite(relays[3], HIGH);
+  digitalWrite(relays[3], LOW);
   relayActive[3] = false;
 
   relays[5] = 27;
   pinMode(relays[5], OUTPUT);
-  digitalWrite(relays[5], HIGH);
+  digitalWrite(relays[5], LOW);
   relayActive[5] = false;
 
   relays[7] = 29;
   pinMode(relays[7], OUTPUT);
-  digitalWrite(relays[7], HIGH);
+  digitalWrite(relays[7], LOW);
   relayActive[7] = false;
 
   relays[9] = 31;
   pinMode(relays[9], OUTPUT);
-  digitalWrite(relays[9], HIGH);
+  digitalWrite(relays[9], LOW);
   relayActive[9] = false;
 
   relays[11] = 33;
   pinMode(relays[11], OUTPUT);
-  digitalWrite(relays[11], HIGH);
+  digitalWrite(relays[11], LOW);
   relayActive[11] = false;
 
   relays[13] = 35;
   pinMode(relays[13], OUTPUT);
-  digitalWrite(relays[13], HIGH);
+  digitalWrite(relays[13], LOW);
   relayActive[13] = false;
 
   relays[15] = 37;
   pinMode(relays[15], OUTPUT);
-  digitalWrite(relays[15], HIGH);
+  digitalWrite(relays[15], LOW);
   relayActive[15] = false;
 
   relays[2] = 39;
   pinMode(relays[2], OUTPUT);
-  digitalWrite(relays[2], HIGH);
+  digitalWrite(relays[2], LOW);
   relayActive[2] = false;
 
   relays[4] = 41;
   pinMode(relays[4], OUTPUT);
-  digitalWrite(relays[4], HIGH);
+  digitalWrite(relays[4], LOW);
   relayActive[4] = false;
 
   relays[6] = 43;
   pinMode(relays[6], OUTPUT);
-  digitalWrite(relays[6], HIGH);
+  digitalWrite(relays[6], LOW);
   relayActive[6] = false;
 
   relays[8] = 45;
   pinMode(relays[8], OUTPUT);
-  digitalWrite(relays[8], HIGH);
+  digitalWrite(relays[8], LOW);
   relayActive[8] = false;
 
   relays[10] = 47;
   pinMode(relays[10], OUTPUT);
-  digitalWrite(relays[10], HIGH);
+  digitalWrite(relays[10], LOW);
   relayActive[10] = false;
 
   relays[12] = 49;
   pinMode(relays[12], OUTPUT);
-  digitalWrite(relays[12], HIGH);
+  digitalWrite(relays[12], LOW);
   relayActive[12] = false;
 
   relays[14] = 51;
   pinMode(relays[14], OUTPUT);
-  digitalWrite(relays[14], HIGH);
+  digitalWrite(relays[14], LOW);
   relayActive[14] = false;
 
   relays[16] = 53;
   pinMode(relays[16], OUTPUT);
-  digitalWrite(relays[16], HIGH);
+  digitalWrite(relays[16], LOW);
   relayActive[16] = false;
 
   relays[17] = 22;
   pinMode(relays[17], OUTPUT);
-  digitalWrite(relays[17], HIGH);
+  digitalWrite(relays[17], LOW);
   relayActive[17] = false;
 
   relays[19] = 24;
   pinMode(relays[19], OUTPUT);
-  digitalWrite(relays[19], HIGH);
+  digitalWrite(relays[19], LOW);
   relayActive[19] = false;
 
   relays[21] = 26;
   pinMode(relays[21], OUTPUT);
-  digitalWrite(relays[21], HIGH);
+  digitalWrite(relays[21], LOW);
   relayActive[21] = false;
 
   relays[23] = 28;
   pinMode(relays[23], OUTPUT);
-  digitalWrite(relays[23], HIGH);
+  digitalWrite(relays[23], LOW);
   relayActive[23] = false;
 
   relays[25] = 30;
   pinMode(relays[25], OUTPUT);
-  digitalWrite(relays[25], HIGH);
+  digitalWrite(relays[25], LOW);
   relayActive[25] = false;
 
   relays[27] = 32;
   pinMode(relays[27], OUTPUT);
-  digitalWrite(relays[27], HIGH);
+  digitalWrite(relays[27], LOW);
   relayActive[27] = false;
 
   relays[29] = 34;
   pinMode(relays[29], OUTPUT);
-  digitalWrite(relays[29], HIGH);
+  digitalWrite(relays[29], LOW);
   relayActive[29] = false;
 
   relays[31] = 36;
   pinMode(relays[31], OUTPUT);
-  digitalWrite(relays[31], HIGH);
+  digitalWrite(relays[31], LOW);
   relayActive[31] = false;
 
   relays[18] = 38;
   pinMode(relays[18], OUTPUT);
-  digitalWrite(relays[18], HIGH);
+  digitalWrite(relays[18], LOW);
   relayActive[18] = false;
 
   relays[20] = 40;
   pinMode(relays[20], OUTPUT);
-  digitalWrite(relays[20], HIGH);
+  digitalWrite(relays[20], LOW);
   relayActive[20] = false;
 
   relays[22] = 42;
   pinMode(relays[22], OUTPUT);
-  digitalWrite(relays[22], HIGH);
+  digitalWrite(relays[22], LOW);
   relayActive[22] = false;
 
   relays[24] = 44;
   pinMode(relays[24], OUTPUT);
-  digitalWrite(relays[24], HIGH);
+  digitalWrite(relays[24], LOW);
   relayActive[24] = false;
 
   relays[26] = 46;
   pinMode(relays[26], OUTPUT);
-  digitalWrite(relays[26], HIGH);
+  digitalWrite(relays[26], LOW);
   relayActive[26] = false;
 
   relays[28] = 48;
   pinMode(relays[28], OUTPUT);
-  digitalWrite(relays[28], HIGH);
+  digitalWrite(relays[28], LOW);
   relayActive[28] = false;
 
   relays[30] = 50;
   pinMode(relays[30], OUTPUT);
-  digitalWrite(relays[30], HIGH);
+  digitalWrite(relays[30], LOW);
   relayActive[30] = false;
 
   relays[32] = 52;
   pinMode(relays[32], OUTPUT);
-  digitalWrite(relays[32], HIGH);
+  digitalWrite(relays[32], LOW);
   relayActive[32] = false;
 
   relays[33] = 20;
   pinMode(relays[33], OUTPUT);
-  digitalWrite(relays[33], HIGH);
+  digitalWrite(relays[33], LOW);
   relayActive[33] = false;
 
   relays[34] = 19;
   pinMode(relays[34], OUTPUT);
-  digitalWrite(relays[34], HIGH);
+  digitalWrite(relays[34], LOW);
   relayActive[34] = false;
 
   relays[35] = 18;
   pinMode(relays[35], OUTPUT);
-  digitalWrite(relays[35], HIGH);
+  digitalWrite(relays[35], LOW);
   relayActive[35] = false;
 
   relays[36] = 17;
   pinMode(relays[36], OUTPUT);
-  digitalWrite(relays[36], HIGH);
+  digitalWrite(relays[36], LOW);
   relayActive[36] = false;
 
 
@@ -232,8 +232,6 @@ void setup() {
   delay(5000);
   Serial.print("Done!");
   Serial.println(" ");
-
-
 }
 //Dekleracije za kartice
 bool Skenirana = false;
@@ -271,7 +269,7 @@ void loop() {
   // Preverim če je že minilo 5 sec, da ugasnem relay
   for (int x = 1; x < stKartic; x++) {
     if (relayActive[x] && millis() - relayActivationTime[x] >= 500) {
-      digitalWrite(relays[x], HIGH);
+      digitalWrite(relays[x], LOW);
       relayActive[x] = false;
     }
   }
@@ -287,7 +285,7 @@ void DodajOmarico(long skeniranaKartica){
           cardCount++;
           Serial.print("Dal kartico v omarico: ");
           Serial.println(x);
-          digitalWrite(relays[x], LOW);
+          digitalWrite(relays[x], HIGH);
           relayActivationTime[x] = millis();
           relayActive[x] = true;
           Skenirana = true;
@@ -319,7 +317,7 @@ void OdstraniOmarico(long skeniranaKartica){
     if (kartice[x] == skeniranaKartica) {
       Serial.print("Našel kartico za omarico: ");
       Serial.println(x);
-      digitalWrite(relays[x], LOW);
+      digitalWrite(relays[x], HIGH);
       relayActivationTime[x] = millis();
       relayActive[x] = true;
 
@@ -369,3 +367,5 @@ void DisplayFull(){
   Serial.println("Polno!");
   displayTurnOffTime = millis() + displayTurnOffDelay;
 }
+
+
